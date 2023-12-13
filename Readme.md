@@ -36,7 +36,7 @@ Tools:
 
 앞서 수행한 [Assignment2](https://github.com/ymiwm/KDT_IS3_Assignment2) Web Application의 취약점 분석
 
-0. Assets
+0. Assets(WIP)
     1. '*Member*' table account information
     3. Session hijacking
     2. Disguise when '*Write Post*'
@@ -78,22 +78,22 @@ Tools:
     - 웹 브라우저 종료 후 다시 로그인
     ![SESSION 2](/img/session/Session%202.png)
 
-4. Insufficient authentification
+4. Insufficient authentification(WIP)
     - **수행**: 
 
     - **결과**: 
 
-5. Insufficient authorization
+5. Insufficient authorization(WIP)
     - **수행**: 
 
     - **결과**: 
 
-6. Sending plain data
+6. Sending plain data(WIP)
     - **수행**:
 
     - **결과**:
 
-7. Directory indexing & Directory traversal & Location identification
+7. Directory indexing & Directory traversal & Location identification(WIP)
     - **수행**: 
  
     - **결과**: 
