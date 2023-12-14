@@ -93,7 +93,7 @@ Tools: Burp Suite
     - **방어**: 해당 없음
 
 4. **Insufficient authorization - Failed but vulnerable**
-    - **수행**: *Write* 동작 시 *POST* 방식으로 보내지는 ```$id``` 값에서 session에 대한 검증이 없으므로 접근 권한을 무시하고 다른 작성자로 위장할 수 있음. 다만, *POST*방식에 ```input```으로 주어지는 *Author*부가 고정되어있어 방법 찾지 못함.
+    - **수행**: *Write* 동작 시 *POST* 방식으로 보내지는 ```$id``` 값에서 session에 대한 검증이 없으므로 접근 권한을 무시하고 다른 작성자로 위장할 수 있음. 다만, *POST*방식에 ```input```으로 주어지는 *Author*부가 고정되어있어 방법 찾지 못함. -> Update: Burp Suite를 사용하여 변조 가능
 
     - **결과**: 없음(밑의 이미지는 수행부의 내용을 확인시키기 위함)
     ![Insufficient Authorization 0](/img/insufficient%20authorization/Insufficient%20Authorization%200.png)
