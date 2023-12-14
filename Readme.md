@@ -16,13 +16,15 @@ Tools:
 
 1. Source Code Link<a href="#1-source-code-link"><sup>[1]</sup></a>
 
-2. Exploit & Result<a href="#2-exploit--result"><sup>[2]</sup></a>
+2. Implementation<a href="#2-implementation"><sup>[2]</sup></a>
 
 3. Wrap Up<a href="#3-wrap-up"><sup>[3]</sup></a>
 
-4. Review<a href="#4-review"><sup>[4]</sup></a>
+4. WIP<a href="#4-wip"><sup>[4]</sup></a>
 
-5. Ref Links<a href="#5-ref-links"><sup>[5]</sup></a>
+5. Review<a href="#5-review"><sup>[5]</sup></a>
+
+6. Ref Links<a href="#6-ref-links"><sup>[6]</sup></a>
 
 ---
 
@@ -32,7 +34,7 @@ Tools:
 
 ---
 
-#### 2. Exploit & Result
+#### 2. Implementation
 
 앞서 수행한 [Assignment2](https://github.com/ymiwm/KDT_IS3_Assignment2) Web Application의 취약점 분석
 
@@ -51,14 +53,21 @@ Tools:
     - **결과**: SQL injection 이전에 MySQL server에 직접 query를 보냈을 때 결과값이 null로 반환되어 파일 불러오기 실패
     ![SQL 0](/img/SQL_Injection/SQLI%200.png)
 
+    - **방어**: PDO의 prepare(pstmt)과 parameter binding(bindParam) 사용과 필터링을 추가해주면 더 견고한 방어가 가능할 것으로 보임
+
 2. Cross-Site Scripting(XSS) - **Succeed**
     - **수행**: *Write* 작업에서 보내지는 ```content``` 에 payload를 입력하여 결과 확인
 
     - **수행**: ```alert``` 동작, 서버 내 img파일에도 접근하여 출력 가능
+    
+    - ```<script> alert(1) </script>```
     ![XSS 0](/img/XSS/XSS%200.png)
     ![XSS 1](/img/XSS/XSS%201.png)
+    - ```<img src='img/f.png'>```
     ![XSS 2](/img/XSS/XSS%202.png)
     ![XSS 3](/img/XSS/XSS%203.png)
+
+    - **방어**: 시스템적인 방어가 불가능함으로 문자 필터링으로 방어
 
 3. Session prediction & Session fixation - **Failed**
     - **수행**: ```<script>alert(document.cookie)</script>```를 *index.php*에 hard coding하여 확인
@@ -67,10 +76,11 @@ Tools:
         - IP address of the client
         - Current time
         - PHP Linear Congruence Generator - a pseudo random number generator (PRNG)
-        - OS-specific random source - if the OS has a random source available (e.g. /dev/urandom)  
-        위와 같은 요소와 함께 생성한다고 함.
+        - OS-specific random source - if the OS has a random source available (e.g. /dev/urandom)
 
+    위와 같은 요소와 함께 생성한다고 함.
     이로써 Session prediction은 해결되었지만, 다른 시간에 로그아웃 후 로그인 해본 결과 ```session_destroy()```가 되어 id가 바뀔 것이라 예상하였으나 같은 id가 주어짐. 다만, 웹 브라우저를 껐다키는 경우 값이 바뀌어 Session fixation 또한 해당되지 않는 것으로 보임.
+
     - 로그인 후 
     ![SESSION 0](/img/session/Session%200.png)
     - 로그아웃 후 다시 로그인
@@ -78,13 +88,8 @@ Tools:
     - 웹 브라우저 종료 후 다시 로그인
     ![SESSION 2](/img/session/Session%202.png)
 
-4. Insufficient authentification(WIP)
-    - **수행**: 
-
-    - **결과**: 
-
 5. Insufficient authorization(WIP)
-    - **수행**: 
+    - **수행**: *Write* 동작 시 *POST* 방식으로 보내지는 ```$id``` 값에서 session에 대한 검증이 없으므로 접근 권한을 무시하고 다른 작성자로 위장할 수 있음.
 
     - **결과**: 
 
@@ -102,18 +107,25 @@ Tools:
 
 #### 3. Wrap Up
 
-1. SQL injection을 수행하지 못해본 점이 아쉬움  
--> 이후 source code 및 exploit 방법 교정 후 다시 시도
+1. Wrap UP
+    - WIP
 
-2. 다양한 XSS payload로 공격 후 취약점을 어떻게 이용할 수 있는지 확인
+#### 4. WIP
+- SQL injection을 수행하지 못해본 점이 아쉬움 -> 이후 source code 및 exploit 방법 교정 후 다시 시도
 
-3. Session hijacking은 어떤 방식으로 이루어지는지 확인
+- 치명적인 공격이 가능한 XSS payload 찾기
 
-4. 인증(Authentification)과 인가(Authorization)의 차이 확인
+- ```session_destroy()``` 이후 세션 id값이 바뀌지 않는 이유 확인
 
-5. Hacking tool에 관해 알아보기(ex.WireShark VS Burp Suite)
+- Session hijacking 방식 찾기
 
-6. Directory 및 File 접근을 막기위한 방안 확인
+- 인증(Authentification)과 인가(Authorization)의 차이 확인
+
+- Hacking tool에 관해 정리(ex.*WireShark* VS *Burp Suite*)
+
+- Directory 및 File 접근을 막기위한 방안 확인
+
+- 방어 방법을 코드에 구현하여 결과 확인
 
 ---
 
