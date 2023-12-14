@@ -187,13 +187,13 @@ Directory traversal은 어떤 요건에 의해 이루어지는 지 조사 필요
 
 ---
 
-#### 4. Review
+#### 5. Review
 
 - 피드백 후 추가 예정
 
 ---
 
-#### 5. _Ref Links_
+#### 6. _Ref Links_
 
 OWASP Top 10 
 
