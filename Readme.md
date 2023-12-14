@@ -11,7 +11,7 @@ OS: Kali Linux 6.3.0(VMware)
 Language: PHP, HTML
 Server: Apache
 DB: MySQL
-Tools: 
+Tools: Burp Suite
 ```
 
 1. Source Code Link<a href="#1-source-code-link"><sup>[1]</sup></a>
@@ -44,19 +44,19 @@ Tools:
     3. Directory and file information
 
 1. SQL injection - **Failed**
-    - **수행**: PDO로 인해 다른 injection 방법 수행  
-    ```--secure-file-priv``` 설정을 ```null```로 바꾼 후 ```load_file()```을 이용해 *sqli.txt*을 불러오기 시도  
+    - **수행**: PDO로 인해 다른 injection 방법 수행.  
+    ```--secure-file-priv``` 설정을 ```null```로 바꾼 후 ```load_file()```을 이용해 *sqli.txt*을 불러오기 시도.  
     ( + )```(select '<?=`$_GET[var]`;?>f' into outfile '/var/www/html/hack.php')```
 
-    - **결과**: SQL injection 이전에 MySQL server에 직접 query를 보냈을 때 결과값이 null로 반환되어 파일 불러오기 실패
+    - **결과**: SQL injection 이전에 MySQL server에 직접 query를 보냈을 때 결과값이 null로 반환되어 파일 불러오기 실패.
     ![SQL 0](/img/SQL_Injection/SQLI%200.png)
 
     - **방어**: PDO의 prepare(pstmt)과 parameter binding(bindParam) 사용과 필터링을 추가해주면 더 견고한 방어가 가능할 것으로 보임
 
 2. Cross-Site Scripting(XSS) - **Succeed**
-    - **수행**: *Write* 작업에서 보내지는 ```content``` 에 payload를 입력하여 결과 확인
+    - **수행**: *Write* 작업에서 보내지는 ```content``` 에 payload를 입력하여 결과 확인.
 
-    - **수행**: ```alert``` 동작, 서버 내 img파일에도 접근하여 출력 가능
+    - **수행**: ```alert``` 동작, 서버 내 img파일에도 접근하여 출력 가능.
     
     - ```<script> alert(1) </script>```
     ![XSS 0](/img/XSS/XSS%200.png)
@@ -65,11 +65,11 @@ Tools:
     ![XSS 2](/img/XSS/XSS%202.png)
     ![XSS 3](/img/XSS/XSS%203.png)
 
-    - **방어**: 시스템적인 방어가 불가능함으로 문자 필터링으로 방어
-    (*script*를 필터링 하거나, htmlentities 함수 사용)
+    - **방어**: 시스템적인 방어가 불가능함으로 문자 필터링으로 방어.
+    (*script*를 필터링 하거나, htmlentities 함수 사용.)
 
 3. Session prediction & Session fixation - **Failed**
-    - **수행**: ```<script>alert(document.cookie)</script>```를 *index.php*에 hard coding하여 확인
+    - **수행**: ```<script>alert(document.cookie)</script>```를 *index.php*에 hard coding하여 확인.
 
     - **결과**: 검색 결과 MD5 해쉬를  
         - IP address of the client
@@ -98,10 +98,14 @@ Tools:
 
     - **방어**: ```session``` id를 확인하여 인가 절차 추가
 
-5. Sending plain data(WIP)
-    - **수행**:
+5. Sending plain data - **Succeed**
+    - **수행**: **Burp Suite** 를 사용하여 *Request*, *Response* 데이터 확인
 
-    - **결과**:
+    - **결과**: 데이터 전송 과정에 session id, raw data가 그대로 드러남.
+    ![Sending plain data 0](/img/sending%20plain%20data/Sending%20Plain%20Data%200.png)
+    ![Sending plain data 1](/img/sending%20plain%20data/Sending%20Plain%20Data%201.png)
+    ![Sending plain data 2](/img/sending%20plain%20data/Sending%20Plain%20Data%202.png)
+    ![Sending plain data 3](/img/sending%20plain%20data/Sending%20Plain%20Data%203.png)
 
 6. Directory indexing & Directory traversal & Test file exposure(WIP)
     - **수행**: 
@@ -112,25 +116,25 @@ Tools:
 
 #### 3. Wrap Up
 
-0. Assets  
+0. **Assets**  
 서비스의 크기가 작아 에셋을 설정하는 데 어려움이 있었다.
 
-1. SQL injection  
+1. **SQL injection**  
 PHP 사이트 구축 시 의도치 않게 PDO를 사용하면서 SQL injection을 방어하게 되어 수행하지 적절한 공격을 수행하지 못했다. 기본적인 공격법인 만큼 이해를 위해 고의적으로 취약점을 만들어 수행해볼 것.
 
-2. Cross-site scripting  
+2. **Cross-site scripting**  
 적절하게 수행되었다고는 생각하지만 asset에 접근하지 못한게 아쉬움. Payload에 관해 더 알아보고 Critical한 취약점을 살펴보면 좋을 듯.
 
-3. Session prediction & Session fixation  
+3. **Session prediction & Session fixation**  
 ```session``` 생성, 파괴가 어떤 과정으로 이루어지는지 알아보면 좋을 듯.
 
-4. Insufficient authorization  
-데이터 전송 시 인가 절차가 없는 점은 취약점이지만, ```$id```를 어떻게 변조할지 방법을 찾지 못함. 방법을 더 찾아보기
+4. **Insufficient authorization**  
+*POST* 과정에 ```session``` 확인이 없는 것까지 취약점을 파악하였으나, ```$id```를 변조하여 disguise하는 것도 수행하는 편이 좋을 듯.
 
-5. Sending plain data
+5. **Sending plain data**  
+패킷 변조 등을 통해 의도와 다른 수행 등 다양한 Variation이 있을 듯. 정보를 전달하는 과정에 Encryption, Hashing 등의 작업을 추가하기.
 
-
-6. Directory indexing & Directory traversal & Test file exposure
+6. Directory indexing & Directory traversal & Test file exposure(WIP)
 
 
 
