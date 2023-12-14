@@ -39,11 +39,9 @@ Tools:
 앞서 수행한 [Assignment2](https://github.com/ymiwm/KDT_IS3_Assignment2) Web Application의 취약점 분석
 
 0. Assets(WIP)
-    1. '*Member*' table account information
-    3. Session hijacking
-    2. Disguise when '*Write Post*'
-    4. Sniffing data
-    5. Directory and file information
+    1. Account information in '*Member*' table
+    2. Data in '*Board*' table
+    3. Directory and file information
 
 1. SQL injection - **Failed**
     - **수행**: PDO로 인해 다른 injection 방법 수행  
@@ -68,6 +66,7 @@ Tools:
     ![XSS 3](/img/XSS/XSS%203.png)
 
     - **방어**: 시스템적인 방어가 불가능함으로 문자 필터링으로 방어
+    (*script*를 필터링 하거나, htmlentities 함수 사용)
 
 3. Session prediction & Session fixation - **Failed**
     - **수행**: ```<script>alert(document.cookie)</script>```를 *index.php*에 hard coding하여 확인
@@ -88,17 +87,23 @@ Tools:
     - 웹 브라우저 종료 후 다시 로그인
     ![SESSION 2](/img/session/Session%202.png)
 
-5. Insufficient authorization(WIP)
-    - **수행**: *Write* 동작 시 *POST* 방식으로 보내지는 ```$id``` 값에서 session에 대한 검증이 없으므로 접근 권한을 무시하고 다른 작성자로 위장할 수 있음.
+    - **방어**: 해당 없음
 
-    - **결과**: 
+4. Insufficient authorization - **Failed but vulnerable**
+    - **수행**: *Write* 동작 시 *POST* 방식으로 보내지는 ```$id``` 값에서 session에 대한 검증이 없으므로 접근 권한을 무시하고 다른 작성자로 위장할 수 있음. 다만, *POST*방식에 ```input```으로 주어지는 *Author*부가 고정되어있어 방법 찾지 못함.
 
-6. Sending plain data(WIP)
+    - **결과**: 없음(밑의 이미지는 수행부의 내용을 확인시키기 위함)
+    ![Insufficient Authorization 0](/img/insufficient%20authorization/IA%200.png)
+    ![Insufficient Authorization 1](/img/insufficient%20authorization/IA%201.png)
+
+    - **방어**: ```session``` id를 확인하여 인가 절차 추가
+
+5. Sending plain data(WIP)
     - **수행**:
 
     - **결과**:
 
-7. Directory indexing & Directory traversal & Location identification(WIP)
+6. Directory indexing & Directory traversal & Test file exposure(WIP)
     - **수행**: 
  
     - **결과**: 
@@ -107,8 +112,27 @@ Tools:
 
 #### 3. Wrap Up
 
-1. Wrap UP
-    - WIP
+0. Assets  
+서비스의 크기가 작아 에셋을 설정하는 데 어려움이 있었다.
+
+1. SQL injection  
+PHP 사이트 구축 시 의도치 않게 PDO를 사용하면서 SQL injection을 방어하게 되어 수행하지 적절한 공격을 수행하지 못했다. 기본적인 공격법인 만큼 이해를 위해 고의적으로 취약점을 만들어 수행해볼 것.
+
+2. Cross-site scripting  
+적절하게 수행되었다고는 생각하지만 asset에 접근하지 못한게 아쉬움. Payload에 관해 더 알아보고 Critical한 취약점을 살펴보면 좋을 듯.
+
+3. Session prediction & Session fixation  
+```session``` 생성, 파괴가 어떤 과정으로 이루어지는지 알아보면 좋을 듯.
+
+4. Insufficient authorization  
+데이터 전송 시 인가 절차가 없는 점은 취약점이지만, ```$id```를 어떻게 변조할지 방법을 찾지 못함. 방법을 더 찾아보기
+
+5. Sending plain data
+
+
+6. Directory indexing & Directory traversal & Test file exposure
+
+
 
 #### 4. WIP
 - SQL injection을 수행하지 못해본 점이 아쉬움 -> 이후 source code 및 exploit 방법 교정 후 다시 시도
@@ -125,7 +149,7 @@ Tools:
 
 - Directory 및 File 접근을 막기위한 방안 확인
 
-- 방어 방법을 코드에 구현하여 결과 확인
+- 시큐어코딩을 수행하여 결과 확인
 
 ---
 
