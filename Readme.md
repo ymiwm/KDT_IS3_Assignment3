@@ -30,7 +30,7 @@ Tools: Burp Suite
 
 #### 1. Source Code Link
 
-[Link - KDT_IS3_Assignment2](https://github.com/ymiwm/KDT_IS3_Assignment3)
+[Link - KDT_IS3_Assignment3](https://github.com/ymiwm/KDT_IS3_Assignment3)
 
 ---
 
