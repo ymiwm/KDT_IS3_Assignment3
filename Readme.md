@@ -132,7 +132,7 @@ Tools: Burp Suite
         ![Directory Indexing 3](/img/path/Directory%20Indexing%203.png)
         디렉토리 내부 파일엔 접근이 가능 - 취약점으로 보임
         ![Direct Access To File](/img/path/Direct%20Access%20To%20File.png)
-        - Directory traversal
+        - Directory traversal  
         여러 가능한 경로를 설정해주었을 때 *index.php*가 출력됨.
         ![Directory Traversal 0](/img/path/Directory%20Traversal%200.png)
         ![Directory Traversal 1](/img/path/Directory%20Traversal%201.png)
