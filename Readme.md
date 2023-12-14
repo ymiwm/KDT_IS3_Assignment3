@@ -111,6 +111,8 @@ Tools: Burp Suite
     ![Sending plain data 2](/img/sending%20plain%20data/Sending%20Plain%20Data%202.png)
     ![Sending plain data 3](/img/sending%20plain%20data/Sending%20Plain%20Data%203.png)
 
+    - **방어**: 정보 전달 시 Encrytion, Hashing을 적용
+
 6. **Directory indexing & Directory traversal - Failed**
     - **수행**:
         - Directory indexing  
@@ -132,6 +134,10 @@ Tools: Burp Suite
         여러 가능한 경로를 설정해주었을 때 *index.php*가 출력됨.
         ![Directory Traversal 0](/img/path/Directory%20Traversal%200.png)
         ![Directory Traversal 1](/img/path/Directory%20Traversal%201.png)
+    
+    - **방어**:  
+    Directory indexing의 경우 적절한 옵션 설정.  
+    Directory traversal의 경우 path와 관련된 문자 처리, 프로세스의 디렉토리 이동을 제한하는 방법, Key-Value file system 사용하여 방어.
 
 ---
 
