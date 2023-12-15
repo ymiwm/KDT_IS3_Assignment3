@@ -92,12 +92,50 @@ Tools: Burp Suite
 
     - **방어**: 해당 없음
 
-4. **Insufficient authorization - Failed but vulnerable**
-    - **수행**: *Write* 동작 시 *POST* 방식으로 보내지는 ```$id``` 값에서 session에 대한 검증이 없으므로 접근 권한을 무시하고 다른 작성자로 위장할 수 있음. 다만, *POST*방식에 ```input```으로 주어지는 *Author*부가 고정되어있어 방법 찾지 못함. -> Update: Burp Suite를 사용하여 변조 가능
+4. **Insufficient authorization - Succeed with failed**
+    - **수행**: *Write* 동작 시 *POST* 방식으로 보내지는 ```$id``` 값에서 session에 대한 검증이 없으므로 접근 권한을 무시하고 다른 작성자로 위장할 수 있음. ~~다만, *POST*방식에 ```input```으로 주어지는 *Author*부가 고정되어있어 방법 찾지 못함.~~ -> Update: Burp Suite를 사용하여 변조 가능
 
-    - **결과**: 없음(밑의 이미지는 수행부의 내용을 확인시키기 위함)
+    - **결과**: Modify의 경우 id를 parameter로 받아 비교함으로 exploit에 성공하였으나,  
+    Delete의 경우 post에 해당하는 id를 DB로 부터 읽고, 이를 ```session``` id와 비교함으로 해당 작동을 수행할 수 없었다.
+
+    Intercept를 위한 수정, 삭제용 post 작성
     ![Insufficient Authorization 0](/img/insufficient%20authorization/Insufficient%20Authorization%200.png)
     ![Insufficient Authorization 1](/img/insufficient%20authorization/Insufficient%20Authorization%201.png)
+
+    Target account로 접속
+    ![List 0](/img/insufficient%20authorization/List(Rethinkin).png)
+    Actor account로 접속
+    ![List 1](/img/insufficient%20authorization/List(Sample).png)
+    
+    **Start Modifying Without Authorization**
+
+    Target post
+    ![Modify Target](/img/insufficient%20authorization/Modify%20Target.png)
+    Modify own post to intercept request
+    ![Modify Own Post](/img/insufficient%20authorization/Modify%20Own%20Post.png)
+    Intercept request
+    ![Intercept Update 0](/img/insufficient%20authorization/Intercept%20Update%200.png)
+    Modify request
+    ![Intercept Update 1](/img/insufficient%20authorization/Intercept%20Update%201.png)
+    Modify complete
+    ![Modify Complete](/img/insufficient%20authorization/Modify%20Complete.png)
+    Result - **Succeed**
+    ![Modify Result](/img/insufficient%20authorization/Modify%20Result.png)
+
+    **Start Deleting Without Authorization**
+
+    Target post
+    ![Delete Target](/img/insufficient%20authorization/Delete%20Target.png)
+    Delete own post to intercept request
+    ![Delete Attempt](/img/insufficient%20authorization/Delete%20Attempt.png)
+    Intercept request
+    ![Intercept Delete 0](/img/insufficient%20authorization/Intercept%20Delete%200.png)
+    Modify request
+    ![Intercept Delete 1](/img/insufficient%20authorization/Intercept%20Delete%201.png)
+    Access denied
+    ![Delete Failed](/img/insufficient%20authorization/Delete%20Failed.png)
+    Result - **Failed**
+    ![Delete Result](/img/insufficient%20authorization/Delete%20Result.png)
 
     - **방어**: ```session``` id를 확인하여 인가 절차 추가
 
